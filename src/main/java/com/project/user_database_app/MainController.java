@@ -11,11 +11,13 @@ public class MainController {
     private UserRepository userRepository;
 
     @PostMapping(path="/add")
-    public @ResponseBody String addNewUser(@RequestParam String name, @RequestParam String accountType,
+    public @ResponseBody String addNewUser(@RequestParam String firstName, @RequestParam String lastName,
+                                           @RequestParam String accountType,
                                            @RequestParam String login, @RequestParam String password,
                                            @RequestParam String email, @RequestParam Integer deleteCode){
         User n = new User();
-        n.setName(name);
+        n.setFirstName(firstName);
+        n.setLastName(lastName);
         n.setLogin(login);
         n.setPassword(password);
         n.setAccountType(accountType);

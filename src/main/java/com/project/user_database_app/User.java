@@ -11,7 +11,8 @@ public class User {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Integer id;
-    private String name;
+    private String firstName;
+    private String lastName;
     private String login;
     private String password;
     private String accountType;
@@ -24,14 +25,6 @@ public class User {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getAccountType() {
@@ -72,5 +65,21 @@ public class User {
 
     public void setDeleteCode(Integer deleteCode) {
         this.deleteCode = deleteCode;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 }
