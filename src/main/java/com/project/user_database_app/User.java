@@ -1,6 +1,7 @@
 package com.project.user_database_app;
 
 import com.project.application.UserTypes;
+import org.hibernate.usertype.UserType;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -33,8 +34,8 @@ public class User {
         return accountType;
     }
 
-    public void setAccountType(String accountType) {
-        this.accountType = accountType;
+    public void setAccountType(UserTypes accountType) {
+        this.accountType = accountType.name();
     }
 
     public String getPassword() {

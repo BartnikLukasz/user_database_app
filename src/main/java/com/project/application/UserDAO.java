@@ -45,7 +45,6 @@ public void putRequest(User user){
 
         ArrayList<BasicNameValuePair> params = new ArrayList<BasicNameValuePair>();
 
-
         params.add(new BasicNameValuePair("firstName", user.getFirstName()));
         params.add(new BasicNameValuePair("lastName",user.getLastName()));
         params.add(new BasicNameValuePair("accountType",user.getAccountType()));
@@ -72,13 +71,13 @@ public void putRequest(User user){
     UserDAO userDAO = new UserDAO();
 
     User user = new User();
-    user.setFirstName("Marek");
-    user.setLastName("Kolarek");
-    user.setAccountType("DEFAULT");
-    user.setLogin("login");
-    user.setPassword("password");
-    user.setEmail("email@ddd.pl");
-    user.setDeleteCode(333);
+    user.setFirstName("Bolek");
+    user.setLastName("Kolorek");
+    user.setAccountType(UserTypes.ADMIN);
+    user.setLogin("admin123");
+    user.setPassword("password123");
+    user.setEmail("email@wwpdas.com");
+    user.setDeleteCode(666);
 
     userDAO.putRequest(user);
 

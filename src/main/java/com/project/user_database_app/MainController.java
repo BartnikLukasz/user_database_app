@@ -1,5 +1,6 @@
 package com.project.user_database_app;
 
+import com.project.application.UserTypes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +21,7 @@ public class MainController {
         n.setLastName(lastName);
         n.setLogin(login);
         n.setPassword(password);
-        n.setAccountType(accountType);
+        n.setAccountType(UserTypes.valueOf(accountType));
         n.setEmail(email);
         n.setDeleteCode(deleteCode);
         userRepository.save(n);
