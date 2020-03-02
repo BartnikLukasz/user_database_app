@@ -33,4 +33,9 @@ public class MainController {
         return userRepository.findAll();
     }
 
+    @GetMapping(path="/search")
+    public @ResponseBody Iterable<User> searchUsers(){
+        return null;
+    }
+
 }

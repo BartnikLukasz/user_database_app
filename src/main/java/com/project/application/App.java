@@ -29,6 +29,11 @@ public class App {
     private JButton addUserButton;
     private JTextArea deleteAccountCodeTextArea;
     private JTextField deleteAccountCodeTextField;
+    private JPanel userTablePanel;
+    private JTable userDataTable;
+    private JButton backToMenuTableButton;
+    private JTextField searchTextField;
+    private JButton searchButton;
     private UserDAO userDAO;
 
 
@@ -77,6 +82,12 @@ public class App {
                 } catch (Exception exc) {
                     exc.printStackTrace();
                 }
+            }
+        });
+        backToMenuButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cardLayout.show(mainPanel,"menuCard");
             }
         });
     }
