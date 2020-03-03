@@ -6,6 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 public class App {
     private JPanel mainPanel;
@@ -46,15 +47,21 @@ public class App {
             $$$setupUI$$$();
         }
 
+        CardLayout cardLayout = (CardLayout) mainPanel.getLayout();
+        List<User> users = null;
+        accountTypeComboBox.addItem(UserTypes.ADMIN.name());
+        accountTypeComboBox.addItem(UserTypes.DEFAULT.name());
+
         try {
             userDAO = new UserDAO();
+            users = userDAO.getAllUsers();
+            UserTableModel userTableModel = new UserTableModel(users);
+            userDataTable.setModel(userTableModel);
+
         } catch (Exception exc) {
             exc.printStackTrace();
         }
 
-        CardLayout cardLayout = (CardLayout) mainPanel.getLayout();
-        accountTypeComboBox.addItem(UserTypes.ADMIN.name());
-        accountTypeComboBox.addItem(UserTypes.DEFAULT.name());
 
         goToUserAdditionButton.addActionListener(new ActionListener() {
             @Override
@@ -87,7 +94,30 @@ public class App {
         backToMenuButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                cardLayout.show(mainPanel,"menuCard");
+                cardLayout.show(mainPanel, "menuCard");
+            }
+        });
+        goToUserTableButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                List<User> users = null;
+                try {
+                    userDAO = new UserDAO();
+                    users = userDAO.getAllUsers();
+                    UserTableModel userTableModel = new UserTableModel(users);
+                    userDataTable.setModel(userTableModel);
+
+                } catch (Exception exc) {
+                    exc.printStackTrace();
+                }
+
+                cardLayout.show(mainPanel, "userTableCard");
+            }
+        });
+        backToMenuTableButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cardLayout.show(mainPanel, "menuCard");
             }
         });
     }
@@ -174,6 +204,22 @@ public class App {
         addUserPanel.add(deleteAccountCodeTextArea, new com.intellij.uiDesigner.core.GridConstraints(7, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, null, new Dimension(150, 50), null, 0, false));
         deleteAccountCodeTextField = new JTextField();
         addUserPanel.add(deleteAccountCodeTextField, new com.intellij.uiDesigner.core.GridConstraints(7, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        userTablePanel = new JPanel();
+        userTablePanel.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(2, 3, new Insets(0, 0, 0, 0), -1, -1));
+        mainPanel.add(userTablePanel, "userTableCard");
+        final JScrollPane scrollPane1 = new JScrollPane();
+        userTablePanel.add(scrollPane1, new com.intellij.uiDesigner.core.GridConstraints(1, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        userDataTable = new JTable();
+        scrollPane1.setViewportView(userDataTable);
+        searchTextField = new JTextField();
+        searchTextField.setText("Search");
+        userTablePanel.add(searchTextField, new com.intellij.uiDesigner.core.GridConstraints(0, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        backToMenuTableButton = new JButton();
+        backToMenuTableButton.setText("Back");
+        userTablePanel.add(backToMenuTableButton, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        searchButton = new JButton();
+        searchButton.setText("Search");
+        userTablePanel.add(searchButton, new com.intellij.uiDesigner.core.GridConstraints(0, 2, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
     }
 
     /**

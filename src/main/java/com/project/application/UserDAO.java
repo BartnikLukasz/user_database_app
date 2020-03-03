@@ -1,15 +1,18 @@
 package com.project.application;
 
+import com.google.gson.Gson;
 import com.project.user_database_app.User;
 import org.apache.http.message.BasicNameValuePair;
 import org.aspectj.apache.bcel.classfile.annotation.NameValuePair;
 
 import java.io.*;
+import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class UserDAO {
@@ -66,22 +69,38 @@ public void putRequest(User user){
     }
 }
 
-public
+public List<User> getAllUsers(){
+
+        try {
+            URL url = new URL("http://localhost:8080/database/all");
+            URLConnection urlConnection = url.openConnection();
+            HttpURLConnection httpURLConnection = (HttpURLConnection) urlConnection;
+            httpURLConnection.setRequestMethod("GET");
+            InputStream inputStream = httpURLConnection.getInputStream();
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+
+            Gson g = new Gson();
+             User tempUserArray[]= g.fromJson(bufferedReader.readLine(),User[].class);
+            List<User> tempUserList = Arrays.asList(tempUserArray);
+
+            bufferedReader.close();
+            inputStream.close();
+            httpURLConnection.connect();
+            System.out.println(httpURLConnection.getResponseMessage() + "\nCode: " + httpURLConnection.getResponseCode() + "\nURL: " + httpURLConnection.getURL());
+
+            return tempUserList;
+
+        }catch(Exception exc){
+            exc.printStackTrace();
+        }
+        return null;
+    }
 
     public static void main(String[] args) {
 
     UserDAO userDAO = new UserDAO();
 
-    User user = new User();
-    user.setFirstName("Bolek");
-    user.setLastName("Kolorek");
-    user.setAccountType(UserTypes.ADMIN);
-    user.setLogin("admin123");
-    user.setPassword("password123");
-    user.setEmail("email@wwpdas.com");
-    user.setDeleteCode(666);
-
-    userDAO.putRequest(user);
+    userDAO.getAllUsers();
 
     }
 
