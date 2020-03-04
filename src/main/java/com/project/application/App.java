@@ -35,6 +35,7 @@ public class App {
     private JButton backToMenuTableButton;
     private JTextField searchTextField;
     private JButton searchButton;
+    private JButton deleteButton;
     private UserDAO userDAO;
 
 
@@ -118,6 +119,40 @@ public class App {
             @Override
             public void actionPerformed(ActionEvent e) {
                 cardLayout.show(mainPanel, "menuCard");
+            }
+        });
+        searchButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                List<User> users = null;
+                String lastName = searchTextField.getText();
+                try {
+                    userDAO = new UserDAO();
+                    users = userDAO.searchByLastName(lastName);
+                    UserTableModel userTableModel = new UserTableModel(users);
+                    userDataTable.setModel(userTableModel);
+
+                } catch (Exception exc) {
+                    exc.printStackTrace();
+                }
+            }
+        });
+        deleteButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                List<User> users = null;
+                int row = userDataTable.getSelectedRow();
+                Integer id = (Integer) userDataTable.getValueAt(row, 0);
+                try {
+                    userDAO = new UserDAO();
+                    userDAO.deleteUserById(id);
+                    users = userDAO.getAllUsers();
+                    UserTableModel userTableModel = new UserTableModel(users);
+                    userDataTable.setModel(userTableModel);
+
+                } catch (Exception exc) {
+                    exc.printStackTrace();
+                }
             }
         });
     }
@@ -205,7 +240,7 @@ public class App {
         deleteAccountCodeTextField = new JTextField();
         addUserPanel.add(deleteAccountCodeTextField, new com.intellij.uiDesigner.core.GridConstraints(7, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
         userTablePanel = new JPanel();
-        userTablePanel.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(2, 3, new Insets(0, 0, 0, 0), -1, -1));
+        userTablePanel.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(3, 3, new Insets(0, 0, 0, 0), -1, -1));
         mainPanel.add(userTablePanel, "userTableCard");
         final JScrollPane scrollPane1 = new JScrollPane();
         userTablePanel.add(scrollPane1, new com.intellij.uiDesigner.core.GridConstraints(1, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
@@ -220,6 +255,9 @@ public class App {
         searchButton = new JButton();
         searchButton.setText("Search");
         userTablePanel.add(searchButton, new com.intellij.uiDesigner.core.GridConstraints(0, 2, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        deleteButton = new JButton();
+        deleteButton.setText("Delete");
+        userTablePanel.add(deleteButton, new com.intellij.uiDesigner.core.GridConstraints(2, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
     }
 
     /**

@@ -34,8 +34,12 @@ public class MainController {
     }
 
     @GetMapping(path="/search")
-    public @ResponseBody Iterable<User> searchUsers(){
-        return null;
+    public @ResponseBody Iterable<User> searchUsers(@RequestParam String lastName){
+        return userRepository.findByLastNameContains(lastName);
     }
 
+    @DeleteMapping(path="/delete")
+    public @ResponseBody void deleteUser(@RequestParam int id){
+        userRepository.deleteById(id);
+    }
 }

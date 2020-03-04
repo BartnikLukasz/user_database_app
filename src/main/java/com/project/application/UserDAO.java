@@ -80,7 +80,7 @@ public List<User> getAllUsers(){
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
 
             Gson g = new Gson();
-             User tempUserArray[]= g.fromJson(bufferedReader.readLine(),User[].class);
+            User tempUserArray[]= g.fromJson(bufferedReader.readLine(),User[].class);
             List<User> tempUserList = Arrays.asList(tempUserArray);
 
             bufferedReader.close();
@@ -96,11 +96,53 @@ public List<User> getAllUsers(){
         return null;
     }
 
+    public List<User> searchByLastName(String lastName){
+        try{
+
+            String query="?lastName="+lastName;
+
+            URL url = new URL("http://localhost:8080/database/search"+query);
+            URLConnection urlConnection = url.openConnection();
+            HttpURLConnection httpURLConnection = (HttpURLConnection) urlConnection;
+            httpURLConnection.setRequestMethod("GET");
+            InputStream inputStream = httpURLConnection.getInputStream();
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+
+            Gson g = new Gson();
+            User tempUserArray[]= g.fromJson(bufferedReader.readLine(),User[].class);
+            List<User> tempUserList = Arrays.asList(tempUserArray);
+
+            bufferedReader.close();
+            inputStream.close();
+            httpURLConnection.connect();
+
+            return tempUserList;
+
+        }catch(Exception exc){
+            exc.printStackTrace();
+        }
+        return null;
+    }
+
+    public void deleteUserById(Integer id){
+        try{
+            String query = "?id="+id.toString();
+            URL url = new URL("http://localhost:8080/database/delete" + query);
+            URLConnection urlConnection = url.openConnection();
+            HttpURLConnection httpURLConnection = (HttpURLConnection) urlConnection;
+            httpURLConnection.setRequestMethod("DELETE");
+            InputStream inputStream = httpURLConnection.getInputStream();
+            httpURLConnection.connect();
+        }catch(IOException exc){
+            exc.printStackTrace();
+        }
+    }
+
     public static void main(String[] args) {
 
     UserDAO userDAO = new UserDAO();
 
-    userDAO.getAllUsers();
+        System.out.println(userDAO.searchByLastName("Zenak").get(0).getFirstName());
 
     }
 
