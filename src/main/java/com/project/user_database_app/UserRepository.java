@@ -4,6 +4,7 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface UserRepository extends CrudRepository<User,Integer> {
 
-    Iterable<User> findByLastNameContains(String lastName);
+    //Creating method that finds all Users whose last names match parameter
+    Iterable<User> findByLastName(String lastName);
 
 }

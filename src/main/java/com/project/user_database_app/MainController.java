@@ -35,7 +35,7 @@ public class MainController {
 
     @GetMapping(path="/search")
     public @ResponseBody Iterable<User> searchUsers(@RequestParam String lastName){
-        return userRepository.findByLastNameContains(lastName);
+        return userRepository.findByLastName(lastName);
     }
 
     @DeleteMapping(path="/delete")

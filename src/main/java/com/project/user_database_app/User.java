@@ -1,12 +1,12 @@
 package com.project.user_database_app;
 
 import com.project.application.UserTypes;
-import org.hibernate.usertype.UserType;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+
 
 @Entity
 public class User {
