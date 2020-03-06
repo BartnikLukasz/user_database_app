@@ -37,7 +37,7 @@ public class UserDAO {
         return result.toString();
     }
 
-public void putRequest(User user){
+public void addUser(User user){
 
     try {
         URL url = new URL("http://localhost:8080/database/add");
@@ -86,7 +86,6 @@ public List<User> getAllUsers(){
             bufferedReader.close();
             inputStream.close();
             httpURLConnection.connect();
-            System.out.println(httpURLConnection.getResponseMessage() + "\nCode: " + httpURLConnection.getResponseCode() + "\nURL: " + httpURLConnection.getURL());
 
             return tempUserList;
 
