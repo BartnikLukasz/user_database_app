@@ -33,11 +33,6 @@ public class MainController {
         return userRepository.findAll();
     }
 
-    @GetMapping(path="/search")
-    public @ResponseBody Iterable<User> searchUsers(@RequestParam String lastName){
-        return userRepository.findByLastName(lastName);
-    }
-
     @DeleteMapping(path="/delete")
     public @ResponseBody void deleteUser(@RequestParam int id){
         userRepository.deleteById(id);

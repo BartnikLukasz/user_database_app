@@ -15,6 +15,7 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class UserDAO {
 
@@ -65,6 +66,7 @@ public void addUser(User user){
         bufferedWriter.close();
         outputStream.close();
         httpURLConnection.connect();
+        System.out.println("Response code: "+httpURLConnection.getResponseCode());
         JOptionPane.showMessageDialog(null, "User added successfully.");
 
     }catch(IOException exc){
@@ -104,34 +106,20 @@ public List<User> getAllUsers(){
         return null;
     }
 
-    //Sends GET request to Spring server. Path="search", so it takes String parameter and returns List of Users, whose last names match parameter
+    //Gets list of all users, then returns List of Users, whose last names match parameter
     public List<User> searchByLastName(String lastName){
-        try{
 
-            String query="?lastName="+lastName;
+        UserDAO userDAO = new UserDAO();
+        List<User> tempUserList = userDAO.getAllUsers();
 
-            URL url = new URL("http://localhost:8080/database/search"+query);
-            URLConnection urlConnection = url.openConnection();
-            HttpURLConnection httpURLConnection = (HttpURLConnection) urlConnection;
-            httpURLConnection.setRequestMethod("GET");
-            InputStream inputStream = httpURLConnection.getInputStream();
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+        List<User> tempFilteredList = tempUserList.stream()
+                .filter(user -> user.getLastName().toLowerCase().contains(lastName.toLowerCase()))
+                .collect(Collectors.toList());
 
-            Gson g = new Gson();
-            User tempUserArray[]= g.fromJson(bufferedReader.readLine(),User[].class);
-            List<User> tempUserList = Arrays.asList(tempUserArray);
+        return tempFilteredList;
 
-            bufferedReader.close();
-            inputStream.close();
-            httpURLConnection.connect();
-
-            return tempUserList;
-
-        }catch(Exception exc){
-            exc.printStackTrace();
-        }
-        return null;
     }
+
     //Sends DELETE request to Spring server. Path="delete", so it takes Integer parameter
     public void deleteUserById(Integer id){
         try{
@@ -148,6 +136,21 @@ public List<User> getAllUsers(){
             System.out.println("Check any user is selected.\n");
             exc.printStackTrace();
         }
+    }
+
+    public static void main(String[] args) {
+        UserDAO userDAO = new UserDAO();
+
+        User tempUser = new User();
+        tempUser.setFirstName("a");
+        tempUser.setLastName("b");
+        tempUser.setLogin("c");
+        tempUser.setPassword("d");
+        tempUser.setEmail("e");
+        tempUser.setAccountType(UserTypes.ADMIN);
+        tempUser.setDeleteCode(123);
+
+        userDAO.addUser(tempUser);
     }
 
 }
